@@ -5,22 +5,17 @@
 #include <cmath>
 
 namespace ann {
-	Neuron::Neuron(double_t weight_) :
-		weight(weight_) {
-	
-	}
-
-	double_t Neuron::relu(double_t input) {
-		return std::max(0.0, input);
-	}
-
-	double_t Neuron::output(std::vector<double_t>& inputs) {
-		for (auto& input : inputs) {
-
+	NeuralNetwork::NeuralNetwork(std::initializer_list<size_t> layerNeuronCounts) {
+		for (auto& count : layerNeuronCounts) {
+			layers.push_back(Layer(count));
 		}
 	}
 
-	Layer::Layer(size_t numberOfNeurons_) : numberOfNeurons(numberOfNeurons_) {
+	void NeuralNetwork::fit(size_t epochs) {
+
+	}
+
+	Layer::Layer(size_t numberOfNeurons) {
 		std::normal_distribution<double_t> weights(0.0, std::sqrt(2.0));
 		std::default_random_engine weightGenerator;
 
@@ -30,5 +25,21 @@ namespace ann {
 		}
 
 		bias = weights(weightGenerator);
+	}
+
+	Neuron::Neuron(double_t weight_) : weight(weight_) {
+		output = 0.0;
+	}
+
+	double_t Neuron::relu(double_t input) {
+		return std::max(0.0, input);
+	}
+
+	double_t Neuron::calculateOutput(std::vector<Neuron>& inputs, double_t bias) {
+		for (auto& input : inputs) {
+			output += input.weight * input.output;
+		}
+		output += bias;
+		output = relu(output);
 	}
 }
