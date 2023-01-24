@@ -12,7 +12,7 @@ namespace ann {
 		std::ifstream trainingSet(trainPath);
 	}
 
-	Layer::Layer(size_t numberOfNeurons, bool isInput = false) {
+	Layer::Layer(size_t numberOfNeurons, bool isInput) {
 		if (isInput) {
 			for (size_t i = 0; i < numberOfNeurons; i++) {
 				neurons.push_back(Neuron(1.0));
